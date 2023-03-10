@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import bgWeather from '/bgWeather.png';
 import Loader from './Loader';
 
 const Weather = () => {
@@ -9,6 +8,7 @@ const Weather = () => {
   const [temperature, setTemperature] = useState(false);
   const [loader, setLoader] = useState(true);
   const [city, setCity] = useState('');
+  const [darkMode, setDarkMode] = useState(true);
 
   /* Get position lat, lon */
   useEffect(() => {
@@ -39,7 +39,7 @@ const Weather = () => {
     }
   }, [position, city]);
 
-  console.log(weather);
+  // console.log(weather);
 
   /* Get city of input */
   const getCityInput = () => {
@@ -54,7 +54,20 @@ const Weather = () => {
       });
   };
 
-  const backgroundWeather = { backgroundImage: `url(${bgWeather})` };
+  /* Images for DarkMode */
+  const bgDark = { backgroundImage: `url(https://i.postimg.cc/pyb8ypcH/bgDark.png)` };
+  const bgLight = { backgroundImage: `url(https://i.postimg.cc/BZ8V8k7Y/bgLight.png)` };
+
+  const bgDarkWeather = {
+    backgroundImage: `url(https://i.postimg.cc/Z5L7tS0R/bg-Dark-Weather.png)`,
+  };
+  const bgLightWeather = {
+    backgroundImage: `url(https://i.postimg.cc/QMx6jyWq/bg-Light-Weather.png)`,
+  };
+
+  const btnDark = 'https://i.postimg.cc/WpS8pvvq/btnLight.png';
+  const btnLight =
+    'https://i.postimg.cc/ZK7d2Yhj/btnDark.png';
 
   /* Function to convert temperature */
   const tFahrenheit = (temp) => (temp * 9) / 5 + 32;
@@ -68,12 +81,12 @@ const Weather = () => {
       {loader ? (
         <Loader />
       ) : (
-        <div>
+        <div className="h-screen bg-cover bg-center" style={darkMode ? bgLight : bgDark}>
           <nav className="flex justify-evenly pt-10">
             <h1 className="text-white text-lg mr-32">Wheather App</h1>
             <div className="mt-4 absolute top-20">
               <input
-                className="py-2 px-2 rounded"
+                className="py-1 px-5 rounded"
                 type="text"
                 placeholder="Enter city or town"
                 value={city}
@@ -81,18 +94,18 @@ const Weather = () => {
               />
               <button
                 onClick={getCityInput}
-                className="bg-blue-800 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-800 hover:bg-blue-500 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Search
               </button>
             </div>
-            <button>
-              <img className="h-5" src="/btn.png" alt="" />
+            <button onClick={() => setDarkMode(!darkMode)}>
+              <img className="h-8" src={darkMode ? btnLight : btnDark} alt="" />
             </button>
           </nav>
           <div
             className="text-blue-600 mt-32 h-60 bg-center bg-no-repeat bg-contain flex flex-col items-center justify-center"
-            style={backgroundWeather}
+            style={darkMode ? bgLightWeather : bgDarkWeather}
           >
             <div className="relative right-28 pl-4 bottom-6">
               <div className="relative">
